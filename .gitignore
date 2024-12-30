@@ -1,0 +1,12 @@
+# Ignorer les dossiers Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignorer les fichiers d'IDE
+.idea/
+*.iml
+
+# Ignorer les environnements locaux
+.env
