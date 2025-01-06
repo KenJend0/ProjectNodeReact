@@ -44,3 +44,17 @@ cd frontend
 npm install
 cd ../backend
 npm install
+```
+
+## Usage
+### Manager Dashboard
+- Assign coaches to teams.
+- Monitor team performance and player statistics.
+- Manage schedules and messages.
+### Coach Dashboard
+- Add and update player details.
+- View schedules and manage training plans.
+### Player Dashboard
+View personal statistics and team updates.
+## Demo
+A demonstration video showcasing the application's features is provided in the /Video folder.
