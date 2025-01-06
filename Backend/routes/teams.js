@@ -217,4 +217,41 @@ router.get('/:id/schedules', authMiddleware, schedulesController.getSchedulesByT
  */
 router.get('/', authMiddleware, teamsController.getAllTeams);
 
+/**
+ * @swagger
+ * /api/teams/{id}/coach:
+ *   get:
+ *     summary: Get the coach of a specific team by ID
+ *     tags: [Teams]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the team
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved coach
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 name:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *       404:
+ *         description: Coach not found for the team
+ *       401:
+ *         description: Unauthorized. Token is missing or invalid.
+ */
+router.get('/:id/coach', authMiddleware, teamsController.getCoachByTeam);
+
+
 module.exports = router;

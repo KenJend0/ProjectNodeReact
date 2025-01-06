@@ -122,3 +122,30 @@ exports.getAllTeams = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
+/**
+ * Get the coach of a specific team by ID.
+ * @param {object} req - The request object.
+ * @param {object} res - The response object.
+ */
+exports.getCoachByTeam = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!id) {
+            return res.status(400).json({ error: 'Team ID is required' });
+        }
+
+        const coach = await teamModel.getCoachByTeam(id);
+
+        if (!coach) {
+            return res.status(404).json({ error: 'Coach not found for this team.' });
+        }
+
+        res.status(200).json(coach);
+    } catch (err) {
+        console.error('Error fetching coach:', err.message);
+        res.status(500).json({ error: 'Failed to fetch coach.' });
+    }
+};
+

@@ -100,7 +100,7 @@ exports.getPlayersByTeam = async (req, res) => {
         }
 
         const result = await db.query(
-            `SELECT p.id, p.name, pl.position, pl.buts
+            `SELECT p.id, p.name,p.email, pl.position, pl.buts
              FROM Players pl
                       JOIN Personne p ON pl.id = p.id
              WHERE pl.team_id = $1`,

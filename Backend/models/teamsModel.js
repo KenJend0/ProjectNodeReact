@@ -96,3 +96,24 @@ exports.deleteTeam = async (team_id) => {
         client.release(); // Release the connection
     }
 };
+
+/**
+ * Get the coach of a specific team by ID.
+ * @param {number} teamId - The ID of the team.
+ * @returns {Promise<object|null>} - The coach's information or null if not found.
+ */
+exports.getCoachByTeam = async (teamId) => {
+    try {
+        const query = `SELECT p.id AS coach_id, p.name AS coach_name, p.email AS coach_email FROM Teams t JOIN Coachs c ON t.coach_id = c.id JOIN Personne p ON c.id = p.id WHERE t.id = $1`;
+        const result = await db.query(query, [teamId]);
+
+        if (result.rows.length === 0) {
+            return null; // Aucun coach trouvé
+        }
+
+        return result.rows[0]; // Retourner les informations du coach
+    } catch (error) {
+        console.error('Error fetching coach by team ID:', error.message);
+        throw error;
+    }
+};
