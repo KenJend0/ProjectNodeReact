@@ -11,12 +11,6 @@ PoloManager est une application web conçue pour gérer des équipes de water-po
 - Visualisation des statistiques des joueurs avec **Highcharts**.
 - Authentification et rôles (manager, coach, joueur).
 
-## Captures d'écran
-### Page de connexion
-![Page de connexion](./screenshots/login.png)
-
-### Tableau des joueurs
-![Gestion des joueurs](./screenshots/players-grid.png)
 
 ## Installation et configuration
 ### Prérequis
@@ -25,7 +19,7 @@ PoloManager est une application web conçue pour gérer des équipes de water-po
 
 ### Installation
 ```bash
-git clone https://github.com/<votre-utilisateur>/<nom-du-repo>.git
+git clone https://github.com/KenJend0/ProjectNodeReact.git
 cd frontend
 npm install
 cd ../backend
