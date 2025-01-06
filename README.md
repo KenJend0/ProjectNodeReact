@@ -1,16 +1,36 @@
 # PoloManager
 
 ## Description
-PoloManager est une application web conçue pour gérer des équipes de water-polo. Elle inclut des fonctionnalités pour les managers, coachs et joueurs, comme :
-- Gestion des équipes et des entraîneurs.
-- Suivi des statistiques des joueurs.
-- Calendrier des événements avec planification.
 
-## Fonctionnalités principales
-- Utilisation d'**ag-Grid** pour gérer les joueurs.
-- Visualisation des statistiques des joueurs avec **Highcharts**.
-- Authentification et rôles (manager, coach, joueur).
+**PoloManager** is a web application designed to efficiently manage water polo teams. The application provides distinct features for managers, coaches, and players, such as:
+- Team and coach management.
+- Player statistics tracking.
+- Event scheduling and planning.
 
+As a high-level athlete, I chose this project to combine my technical skills with my passion for sports. I represented the French national team at the European U23 Championships in 2022 and am the current French Elite Vice Champion. This experience inspired me to develop a tool tailored for water polo teams to streamline their operations and improve team collaboration.
+
+## Key Features
+
+- **ag-Grid** integration for managing players and their data.
+- Player statistics visualization using **Highcharts**.
+- Authentication with roles-based access control (manager, coach, player).
+- Advanced functionalities such as role management and dynamic updates.
+
+## Project Dependencies
+
+### Backend
+- `express`: Web framework for the backend.
+- `jsonwebtoken`: Used for secure authentication.
+- `pg`: PostgreSQL client for database interaction.
+- `swagger-ui-express`: Provides a Swagger UI for the REST API.
+- `bcrypt`: Handles password encryption for secure storage.
+
+### Frontend
+- `react`: Framework for building the user interface.
+- `react-router-dom`: Enables navigation between components.
+- `ag-grid-react`: Displays and manages tabular data in the frontend.
+- `highcharts`: Creates dynamic charts for data visualization.
+- `axios`: Handles HTTP requests to the backend.
 
 ## Installation et configuration
 ### Prérequis
