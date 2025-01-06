@@ -7,7 +7,7 @@
 - Player statistics tracking.
 - Event scheduling and planning.
 
-As a high-level athlete, I chose this project to combine my technical skills with my passion for sports. I represented the French national team at the European U23 Championships in 2022 and am the current French Elite Vice Champion. This experience inspired me to develop a tool tailored for water polo teams to streamline their operations and improve team collaboration.
+As a high-level athlete, I chose this project to combine my technical skills with my passion for sports. I represented the French national team at the European U19 Championships in 2022 and am the current French Elite Championship Vice Champion. This experience inspired me to develop a tool tailored for water polo teams to streamline their operations and improve team collaboration.
 
 ## Key Features
 
