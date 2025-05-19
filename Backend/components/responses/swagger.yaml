@@ -1,0 +1,113 @@
+components:
+  schemas:
+    # Schéma d’erreur générique
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required: [error]
+
+    # Schéma retour après auth réussie
+    AuthSuccess:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            token:
+              type: string
+            role:
+              type: string
+            teamId:
+              type: integer
+
+    # Schéma générique « créé »
+    CreatedResponse:
+      type: object
+      properties:
+        data:
+          type: object
+
+    # Schéma pagination
+    Meta:
+      type: object
+      properties:
+        total:
+          type: integer
+        page:
+          type: integer
+        perPage:
+          type: integer
+        totalPages:
+          type: integer
+
+  responses:
+    # 200 OK sans contenu particulier
+    OK:
+      description: Requête réussie
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+
+    # 201 Created
+    Created:
+      description: Ressource créée avec succès
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatedResponse'
+
+    # 400 Bad Request
+    BadRequest:
+      description: Requête invalide (400 Bad Request)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: "Champ manquant ou invalide"
+
+    # 401 Unauthorized
+    Unauthorized:
+      description: Jeton manquant ou invalide (401 Unauthorized)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: "Authentication required"
+
+    # 403 Forbidden
+    Forbidden:
+      description: Permission refusée (403 Forbidden)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: "Accès non autorisé"
+
+    # 404 Not Found
+    NotFound:
+      description: Ressource introuvable (404 Not Found)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: "Ressource non trouvée"
+
+    # 409 Conflict
+    Conflict:
+      description: Conflit de données (409 Conflict)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: "Email déjà utilisé"

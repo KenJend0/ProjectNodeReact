@@ -10,11 +10,13 @@ const db = require('../db');
  * @returns {object} - The newly created user.
  */
 exports.registerUser = async ({ name, email, password, role }) => {
-    const result = await db.query(
-        'INSERT INTO Personne (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *',
-        [name, email, password, role]
-    );
-    return result.rows[0];
+    const sql = `
+    INSERT INTO personne (name, email, password, role)
+    VALUES ($1, $2, $3, $4)
+    RETURNING id, name, email, role, created_at
+  `;
+    const { rows } = await db.query(sql, [name, email, password, role]);
+    return rows[0];
 };
 
 /**
@@ -23,6 +25,40 @@ exports.registerUser = async ({ name, email, password, role }) => {
  * @returns {object|null} - The user details or null if not found.
  */
 exports.getUserByEmail = async (email) => {
-    const result = await db.query('SELECT * FROM Personne WHERE email = $1', [email]);
-    return result.rows[0];
+    const { rows } = await db.query(
+        'SELECT id, name, email, password, role FROM personne WHERE email = $1',
+        [email]
+    );
+    return rows[0] || null;
+};
+
+/**
+ * Retrieve the team ID based on user role.
+ */
+exports.getTeamId = async (userId, role) => {
+    let sql, params;
+    switch (role) {
+        case 'manager':
+            sql = 'SELECT id FROM teams WHERE manager_id = $1';
+            params = [userId];
+            break;
+        case 'coach':
+            // si relation n–n via team_coaches :
+            sql = `
+        SELECT team_id
+          FROM team_coaches
+         WHERE coach_id = $1
+         LIMIT 1
+      `;
+            params = [userId];
+            break;
+        case 'player':
+            sql = 'SELECT team_id FROM players WHERE id = $1';
+            params = [userId];
+            break;
+        default:
+            return null;
+    }
+    const { rows } = await db.query(sql, params);
+    return rows[0]?.id || rows[0]?.team_id || null;
 };

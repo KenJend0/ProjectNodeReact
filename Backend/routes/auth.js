@@ -9,6 +9,7 @@ const authController = require('../controllers/authController');
  *   description: Authentication and user registration
  */
 
+
 /**
  * @swagger
  * /api/auth/login:
@@ -20,26 +21,17 @@ const authController = require('../controllers/authController');
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *                 example: user@example.com
- *               password:
- *                 type: string
- *                 example: password123
+ *             $ref: '#/components/schemas/LoginRequest'
+ *           example:
+ *             email: user@example.com
+ *             password: password123
  *     responses:
- *       200:
- *         description: Successfully logged in
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 token:
- *                   type: string
- *       401:
- *         description: Invalid credentials
+ *       '200':
+ *         $ref: '#/components/responses/AuthSuccess'
+ *       '400':
+ *         $ref: '#/components/responses/BadRequest'
+ *       '401':
+ *         $ref: '#/components/responses/Unauthorized'
  */
 router.post('/login', authController.login);
 
@@ -54,25 +46,19 @@ router.post('/login', authController.login);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *                 example: John Doe
- *               email:
- *                 type: string
- *                 example: user@example.com
- *               password:
- *                 type: string
- *                 example: password123
- *               role:
- *                 type: string
- *                 example: player
+ *             $ref: '#/components/schemas/UserCredentials'
+ *           example:
+ *             name: John Doe
+ *             email: john.doe@example.com
+ *             password: password123
+ *             role: player
  *     responses:
- *       201:
- *         description: User registered successfully
- *       400:
- *         description: Bad request
+ *       '201':
+ *         $ref: '#/components/responses/Created'
+ *       '400':
+ *         $ref: '#/components/responses/BadRequest'
+ *       '409':
+ *         $ref: '#/components/responses/Conflict'
  */
 router.post('/register', authController.register);
 
