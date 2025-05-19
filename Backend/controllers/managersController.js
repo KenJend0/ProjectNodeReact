@@ -48,3 +48,39 @@ exports.getTeamsByManager = async (req, res) => {
         res.status(500).json({ error: 'Server Error' });
     }
 };
+
+
+exports.createTeam = async (req, res) => {
+    try {
+        const managerId = parseInt(req.params.manager_id, 10);
+        const { name, coach_id } = req.body;
+        if (Number.isNaN(managerId) || !name || Number.isNaN(coach_id)) {
+            return res.status(400).json({ error: 'manager_id, name and coach_id are required' });
+        }
+
+        const team = await managersModel.createTeam({ name, coach_id, manager_id: managerId });
+        return res.status(201).json({ data: team });
+    } catch (err) {
+        console.error('Error creating team:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+exports.getCoachByTeam = async (req, res) => {
+    try {
+        const teamId = parseInt(req.params.team_id, 10);
+        if (Number.isNaN(teamId)) {
+            return res.status(400).json({ error: 'Invalid team ID' });
+        }
+
+        const coachId = await managersModel.getCoachByTeam(teamId);
+        if (coachId == null) {
+            return res.status(404).json({ error: 'Coach not found for this team' });
+        }
+
+        return res.status(200).json({ data: { coach_id: coachId } });
+    } catch (err) {
+        console.error('Error retrieving coach:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};

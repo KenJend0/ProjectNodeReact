@@ -1,0 +1,39 @@
+Objectifs PoloManager :
+AUTH : 
+-log
+- register
+
+MANAGER :
+- dashboard global de son club
+- créer une equipe pour son club (u14,u16,u18, Elite ect)
+- Assigner un coach pour chaque equipe.
+- Discussion perso + sicussion e groupe avec toutes les equipes ou tous les coachs ou tous les parents ect.
+- Possibilités de voir le detail de chaque equipe, les 'cartes' des joueurs, du coach.
+- Ecran Sponsor/Finances
+- Communication, suivre la regularité des posts sur les resaux sociaux.
+- Reservations hotel, trains ect
+- Classement du championnats + stats avancées du championnat.
+
+COACH :
+- Avoir la liste de ses joueurs, clikable pour voir leurs 'cartes' avec les infos.
+- Definir le calendrier. 
+- Onglet performances pour suivre les stats des joueurs lors des matchs
+- Onglet entrainement, pour planifier le contenu de ses entrainements et avoir un suivi de ses joueurs, musculation et dans l'eau. 
+- Discussions perso ou avec son equipe ( que les joueurs si adultes ou aussi avec les parents). 
+- Onglet pour l'analyse video. Avoir la possibilité d'upload la video d'un match pour toutes l'equipe ou de certains passages pour certains joueurs. 
+- Classement du championnats + stats avancées du championnat.
+
+JOUEURS : 
+- Consulter le calendrier + lors d'un deplacement avoir les horaires de trains ect
+- Consulter ses stats
+- Faire son retour sur l'entrainement en notant la difficulté de 1 a 10 par exemple.
+- Disucssion privés ou de groupe avec son equipe
+- Si video, pouvoir la consulter.
+- Classement du championnats + stats avancées du championnat. 
+PARENTS : 
+- Avoir le calendrier + horarires de deplacement si il y a. 
+- Discussions de groupe pour l'equipe de son enfant ou alors de l'entraineur en privé seulement. 
+- Différents classements pour suivre le championnat
+
+AUTRES : 
+Peut etre penser a d'autres accès, si analyste video attitré enlever cette fonctionnalité du coach et faire un ecran seulement pour cette personne. Si prepa physique pareil pour l'entrainement ect. 

@@ -37,3 +37,37 @@ exports.getTeamsByManager = async (manager_id) => {
     );
     return result.rows;
 };
+
+/**
+ * Retrieve the coach in charge of a specific team.
+ * @param {number} team_id - The ID of the manager.
+ * @returns {number} - The id of coach.
+ */
+exports.getCoachByTeam = async (team_id) => {
+    const { rows } = await db.query(
+        `SELECT coach_id
+     FROM teams
+     WHERE id = $1`,
+        [team_id]
+    );
+    if (rows.length === 0) return null;
+    return rows[0].coach_id;
+};
+
+/**
+ * Create a new Team in the database.
+ * @param {object} Team - The Team details.
+ * @param {string} Team.name - The name of the Team.
+ * @param {number} Team.coach_id - The coach_id of the team.
+ * @param {number} Team.manager_id - The coach_id of the team.
+ * @returns {object} - The newly created Team details.
+ */
+exports.createTeam = async ({ name, coach_id, manager_id }) => {
+    const insertTeam = `
+    INSERT INTO teams (name, coach_id, manager_id)
+    VALUES ($1, $2, $3)
+    RETURNING id, name, coach_id, manager_id
+  `;
+    const { rows } = await db.query(insertTeam, [name, coach_id, manager_id]);
+    return rows[0];
+};
