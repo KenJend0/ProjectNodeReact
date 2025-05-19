@@ -71,3 +71,113 @@ exports.createTeam = async ({ name, coach_id, manager_id }) => {
     const { rows } = await db.query(insertTeam, [name, coach_id, manager_id]);
     return rows[0];
 };
+
+/**
+ * Retrieve a manager by its ID.
+ * Returns null if not found.
+ */
+exports.getManagerById = async (id) => {
+    const sql = `
+    SELECT u.id,
+           u.name,
+           u.email,
+           u.created_at,
+           u.updated_at,
+           m.full_name
+      FROM personne u
+      JOIN managers m ON m.id = u.id
+     WHERE u.id = $1
+  `;
+    const { rows } = await db.query(sql, [id]);
+    return rows[0] || null;
+};
+
+/**
+ * List managers with pagination.
+ * Returns an object { rows: [...], total: number }.
+ */
+exports.getManagers = async ({ limit, offset }) => {
+    // 1) Fetch the page of managers
+    const listSql = `
+    SELECT u.id,
+           u.name,
+           u.email,
+           u.created_at,
+           m.full_name
+      FROM personne u
+      JOIN managers m ON m.id = u.id
+     ORDER BY u.created_at DESC
+     LIMIT $1 OFFSET $2
+  `;
+    const { rows } = await db.query(listSql, [limit, offset]);
+
+    // 2) Count total managers
+    const countSql = `SELECT COUNT(*)::int AS count FROM managers`;
+    const { rows: countRows } = await db.query(countSql);
+    const total = countRows[0].count;
+
+    return { rows, total };
+};
+
+/**
+ * Update a manager’s record (users + profile).
+ * Only updates the fields provided.
+ * Returns the updated object, or null if not found.
+ */
+exports.updateManager = async (id, { name, email, full_name }) => {
+    // Build dynamic SET clauses
+    const sets = [];
+    const values = [];
+    let idx = 1;
+
+    if (name) {
+        sets.push(`u.name = $${idx++}`);
+        values.push(name);
+    }
+    if (email) {
+        sets.push(`u.email = $${idx++}`);
+        values.push(email);
+    }
+    if (full_name) {
+        sets.push(`m.full_name = $${idx++}`);
+        values.push(full_name);
+    }
+    if (sets.length === 0) return null;
+
+    // 1) Update personne table
+    const personSets = sets.filter(s => s.startsWith('u.'));
+    if (personSets.length) {
+        const sqlU = `
+      UPDATE personne u
+         SET ${personSets.join(', ')}
+       WHERE u.id = $${idx}
+    `;
+        await db.query(sqlU, [...values.slice(0, personSets.length), id]);
+    }
+
+    // 2) Update managers table
+    const managerSets = sets.filter(s => s.startsWith('m.'));
+    if (managerSets.length) {
+        const sqlM = `
+      UPDATE managers m
+         SET ${managerSets.map(s => s.replace(/^m\./, '')).join(', ')}
+       WHERE m.id = $${idx}
+    `;
+        await db.query(sqlM, [...values.slice(personSets.length), id]);
+    }
+
+    // Return the refreshed manager
+    return this.getManagerById(id);
+};
+
+/**
+ * Delete a manager (cascades via FK on personne).
+ * Returns true if deleted, false otherwise.
+ */
+exports.deleteManager = async (id) => {
+    const { rowCount } = await db.query(
+        'DELETE FROM personne WHERE id = $1',
+        [id]
+    );
+    return rowCount > 0;
+};

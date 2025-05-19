@@ -49,7 +49,11 @@ exports.getTeamsByManager = async (req, res) => {
     }
 };
 
-
+/**
+ * Create a new team.
+ * @param {object} req - The request object.
+ * @param {object} res - The response object.
+ */
 exports.createTeam = async (req, res) => {
     try {
         const managerId = parseInt(req.params.manager_id, 10);
@@ -65,7 +69,11 @@ exports.createTeam = async (req, res) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 };
-
+/**
+ * Retrieve the coach of a team.
+ * @param {object} req - The request object.
+ * @param {object} res - The response object.
+ */
 exports.getCoachByTeam = async (req, res) => {
     try {
         const teamId = parseInt(req.params.team_id, 10);
@@ -81,6 +89,103 @@ exports.getCoachByTeam = async (req, res) => {
         return res.status(200).json({ data: { coach_id: coachId } });
     } catch (err) {
         console.error('Error retrieving coach:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+/**
+ * GET /api/managers/:id
+ * Retrieve manager's profil.
+ */
+exports.getManager = async (req, res) => {
+    try {
+        const managerId = parseInt(req.params.id, 10);
+        if (Number.isNaN(managerId)) {
+            return res.status(400).json({ error: 'Invalid manager ID' });
+        }
+
+        const manager = await managersModel.getManagerById(managerId);
+        if (!manager) {
+            return res.status(404).json({ error: 'Manager not found' });
+        }
+        return res.status(200).json({ data: manager });
+    } catch (err) {
+        console.error('Error fetching manager:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+/**
+ * GET /api/managers
+ * List all managers.
+ */
+exports.listManagers = async (req, res) => {
+    try {
+        const page    = Math.max(1, parseInt(req.query.page, 10) || 1);
+        const perPage = Math.min(100, parseInt(req.query.perPage, 10) || 10);
+        const offset  = (page - 1) * perPage;
+
+        const { rows, total } = await managersModel.getManagers({ limit: perPage, offset });
+        return res.status(200).json({
+            data: rows,
+            meta: {
+                total,
+                page,
+                perPage,
+                totalPages: Math.ceil(total / perPage),
+            }
+        });
+    } catch (err) {
+        console.error('Error listing managers:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+/**
+ * PUT /api/managers/:id
+ * Update manager profil.
+ */
+exports.updateManager = async (req, res) => {
+    try {
+        const managerId = parseInt(req.params.id, 10);
+        if (Number.isNaN(managerId)) {
+            return res.status(400).json({ error: 'Invalid manager ID' });
+        }
+
+        const { name, email, full_name } = req.body;
+        if (!name && !email && !full_name) {
+            return res.status(400).json({ error: 'At least one field (name, email, full_name) is required' });
+        }
+
+        const updated = await managersModel.updateManager(managerId, { name, email, full_name });
+        if (!updated) {
+            return res.status(404).json({ error: 'Manager not found' });
+        }
+        return res.status(200).json({ data: updated });
+    } catch (err) {
+        console.error('Error updating manager:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+/**
+ * DELETE /api/managers/:id
+ * delete manager on cascade.
+ */
+exports.deleteManager = async (req, res) => {
+    try {
+        const managerId = parseInt(req.params.id, 10);
+        if (Number.isNaN(managerId)) {
+            return res.status(400).json({ error: 'Invalid manager ID' });
+        }
+
+        const deleted = await managersModel.deleteManager(managerId);
+        if (!deleted) {
+            return res.status(404).json({ error: 'Manager not found' });
+        }
+        return res.status(204).send();
+    } catch (err) {
+        console.error('Error deleting manager:', err);
         return res.status(500).json({ error: 'Internal server error' });
     }
 };
